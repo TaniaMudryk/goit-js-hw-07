@@ -1,49 +1,69 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
-
 const galleryPictures = document.querySelector(".gallery");
 
-const mainPageMarkup = galleryItems
-  .map((img) => {
-    return `<div class="gallery__item">
-  <a class="gallery__link" href="${img.original}">
+const mainPageMarkup = galleryMarkup(galleryItems);
+
+galleryPictures.insertAdjacentHTML("beforeend", mainPageMarkup);
+
+galleryPictures.addEventListener("click", modalOpen);
+
+
+
+function galleryMarkup(items) {
+  return items
+    .map(({ preview, original, description }) => {
+      return `<div class="gallery__item">
+  <a class="gallery__link" href="${original}">
     <img
       class="gallery__image"
-      src="${img.preview}"
-      data-source="${img.original}"
-      alt="${img.description}"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
     />
   </a>
 </div>`;
-  })
-  .join("");
+    })
+    .join("");
+}
 
-galleryPictures.innerHTML = mainPageMarkup;
 
-galleryPictures.addEventListener("click", openModal);
 
-function openModal(event) {
+function modalOpen(event) {
   event.preventDefault();
-  if (!event.target.classList.contains("gallery__image")) {
+
+  const isItemImage = event.target.classList.contains("gallery__image");
+
+  if (!isItemImage) {
     return;
   }
+
+  const currentImgUrl = event.target.dataset.source; 
+
   const instance = basicLightbox.create(
-    `<img src="${event.target.dataset.source}" width="800" height="600">`,
+    `<img src="${currentImgUrl}" width="800" height="auto"/>`,
     {
       onShow: (instance) => {
-        window.addEventListener("keydown", closeModal);
+        window.addEventListener("keydown", onEscKeyPress);
       },
       onClose: (instance) => {
-        window.removeEventListener("keydown", closeModal);
+        window.removeEventListener("keydown", onEscKeyPress);
       },
     }
   );
-  function closeModal(event) {
-    if (event.code === "Escape") {
+
+  instance.show();
+
+  function onEscKeyPress(event) {
+    const ESC_KEY = "Escape";
+
+    const isEscKey = event.code === ESC_KEY;
+
+    if (isEscKey) {
       instance.close();
     }
   }
-  instance.show();
 }
+
+console.log(galleryItems);
