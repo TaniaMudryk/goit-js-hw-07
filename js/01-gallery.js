@@ -9,8 +9,6 @@ galleryPictures.insertAdjacentHTML("beforeend", mainPageMarkup);
 
 galleryPictures.addEventListener("click", modalOpen);
 
-
-
 function galleryMarkup(items) {
   return items
     .map(({ preview, original, description }) => {
@@ -27,8 +25,6 @@ function galleryMarkup(items) {
     })
     .join("");
 }
-
-
 
 function modalOpen(event) {
   event.preventDefault();
