@@ -5,7 +5,7 @@ console.log(galleryItems);
 
 const galleryPictures = document.querySelector(".gallery");
 
-const mainPage = galleryItems
+const mainPageMarkup = galleryItems
   .map((img) => {
     return `<div class="gallery__item">
   <a class="gallery__link" href="${img.original}">
@@ -20,7 +20,7 @@ const mainPage = galleryItems
   })
   .join("");
 
-galleryPictures.innerHTML = mainPage;
+galleryPictures.innerHTML = mainPageMarkup;
 
 galleryPictures.addEventListener("click", openModal);
 
